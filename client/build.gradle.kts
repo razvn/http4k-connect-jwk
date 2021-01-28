@@ -1,14 +1,18 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("http4k-connect-jwk.client")
     kotlin("kapt")
-    kotlin("jvm")
+    `java-library`
     `maven-publish`
 }
 
+
 val http4kConnectVersion = "2.13.0.0"
+val nimbusJoseJwtVersion = "9.1.3"
 dependencies {
+    api("org.http4k:http4k-core")
+    api("dev.forkhandles:result4k")
+    api("com.nimbusds:nimbus-jose-jwt:$nimbusJoseJwtVersion")
 
     api("org.http4k:http4k-connect-core")
     kapt("org.http4k:http4k-connect-kapt-generator:$http4kConnectVersion")
@@ -26,14 +30,12 @@ publishing {
         }
     }
 }
-repositories {
-    mavenCentral()
-}
+
 val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {
-    jvmTarget = "1.8"
+    jvmTarget = "11"
 }
 val compileTestKotlin: KotlinCompile by tasks
 compileTestKotlin.kotlinOptions {
-    jvmTarget = "1.8"
+    jvmTarget = "11"
 }

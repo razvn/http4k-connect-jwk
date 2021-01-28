@@ -1,6 +1,6 @@
 plugins {
-    id("http4k-connect-jwk.fake")
     kotlin("jvm")
+    `java-library`
     `maven-publish`
 }
 
