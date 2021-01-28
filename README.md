@@ -2,7 +2,7 @@
 
 The JWK connector provides the following Actions:
 
-     *  GetJwkSet
+*  `getJwkSet`: Retrieve the JwkSet from the server 
 
 ### Example usage
 
@@ -21,17 +21,23 @@ fun main() {
 
     val url =  "http://localhost:24588/jwks"    
     // operation return a Result monad of the API type
-    val jwkSet: Result<JWKSet, RemoteFailure> = jwkClient(GetJwkSet(url))
+    val jwkSet: Result<JWKSet, RemoteFailure> = jwkClient.getJwkSet(url)
+    
     println(jwkSet)
 }
 ```
 
-### Default Fake port: 24588
+### Default Fake port: `24588`
 
 To start:
 
 ```
 FakeExample().start()
+```
+
+You can also specify the port: 
+```
+FakeExample().start(1337)
 ```
 
 ## Fake services

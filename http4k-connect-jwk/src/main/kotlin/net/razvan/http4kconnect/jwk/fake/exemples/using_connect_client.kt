@@ -1,10 +1,13 @@
 package net.razvan.http4kconnect.jwk.fake.exemples
 
 import com.nimbusds.jose.jwk.JWKSet
+import dev.forkhandles.result4k.Failure
 import net.razvan.http4kconnect.jwk.client.Http
 import net.razvan.http4kconnect.jwk.client.Jwk
 import dev.forkhandles.result4k.Result
+import dev.forkhandles.result4k.Success
 import net.razvan.http4kconnect.jwk.client.action.GetJwkSet
+import net.razvan.http4kconnect.jwk.client.getJwkSet
 import net.razvan.http4kconnect.jwk.fake.FakeJwk
 import org.http4k.client.JavaHttpClient
 import org.http4k.connect.RemoteFailure
@@ -26,6 +29,11 @@ fun main() {
     val url =  "http://localhost:24588/jwks"
 
     // operation return a Result monad of the API type
-    val jwkSet: Result<JWKSet, RemoteFailure> = jwkClient(GetJwkSet(url))
+    val jwkSet: Result<JWKSet, RemoteFailure> = jwkClient.getJwkSet(url)
     println(jwkSet)
+
+    when(jwkSet) {
+        is Success -> println("JWK successfully retrieved")
+        is Failure -> println("Retrieved failed because: ${jwkSet.reason.message}")
+    }
 }
