@@ -1,9 +1,2 @@
-rootProject.name = "http4k-connect"
-include("http4k-connect-jwk")
-
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        jcenter()
-    }
-}
+rootProject.name = "htt4k-connect-jwk"
+include("client", "fake")
