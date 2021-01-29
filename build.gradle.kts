@@ -15,31 +15,32 @@ subprojects {
     version = "0.1.0"
 
     dependencies {
-        val http4kVersion = "4.1.1.2"
-        val http4kConnectVersion = "2.13.0.0"
-        val forkhandlesVersion = "1.8.1.0"
-        val junitVersion = "5.7.0"
-        val nimbusJoseJwtVersion = "9.1.3"
+        val http4k_version: String by project
+        val http4k_connect_version: String by project
+        val forkhandles_version: String by project
+        val junit_version: String by project
 
         implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
-        implementation(platform("org.http4k:http4k-bom:$http4kVersion"))
+        implementation(platform("org.http4k:http4k-bom:$http4k_version"))
         implementation("org.http4k:http4k-format-moshi")
 
-        implementation(platform("org.http4k:http4k-connect-bom:$http4kConnectVersion"))
-        implementation(platform("dev.forkhandles:forkhandles-bom:$forkhandlesVersion"))
+        implementation(platform("org.http4k:http4k-connect-bom:$http4k_connect_version"))
+        implementation(platform("dev.forkhandles:forkhandles-bom:$forkhandles_version"))
 
         testImplementation("org.http4k:http4k-testing-hamkrest")
         testImplementation("org.http4k:http4k-testing-kotest")
 
-        testImplementation(platform("org.junit:junit-bom:$junitVersion"))
-        testImplementation("org.junit.jupiter:junit-jupiter")
+        testImplementation(platform("org.junit:junit-bom:$junit_version"))
+        // testImplementation("org.junit.jupiter:junit-jupiter")
+        testImplementation("org.junit.jupiter:junit-jupiter-api")
+        testImplementation("org.junit.jupiter:junit-jupiter-engine")
     }
 
     repositories {
-        jcenter()
         mavenCentral()
+        jcenter()
     }
 
     tasks.withType<Test> {
@@ -54,11 +55,13 @@ subprojects {
     }
 
     tasks.jar {
-        archivesBaseName = project.name
+        archiveBaseName.set("http4k-connect-jwk")
+        archiveAppendix.set(project.name)
         manifest {
             attributes(
                 mapOf(
-                    "Implementation-Title" to project.name,
+                    "Implementation-Title" to archiveFileName.get().substringBeforeLast('-'),
+                    "Implementation-Vendor" to "net.razvan",
                     "Implementation-Version" to project.version
                 )
             )

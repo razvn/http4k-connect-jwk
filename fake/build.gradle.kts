@@ -8,6 +8,10 @@ dependencies {
     api("org.http4k:http4k-connect-core-fake")
 
     implementation(project(":client"))
+
+    implementation("org.http4k:http4k-core")
+    implementation("dev.forkhandles:result4k")
+    implementation("org.http4k:http4k-connect-core")
 }
 
 publishing {

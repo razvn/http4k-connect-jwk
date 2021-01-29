@@ -24,6 +24,7 @@ fun listJwkSet(storage: Storage<ECKey>) = "/jwks" bind Method.GET to {
 }
 
 fun renewJwkSet(storage: Storage<ECKey>) = "/renew" bind Method.GET to { req ->
+    storage.remove(KEY)
     storage.getOrDefault(KEY, queryKidLens(req)).let { key ->
         Response(Status.OK).with(
             bodyJwksResponseLens of JWKResponse(listOf(key.toJSONObject()))

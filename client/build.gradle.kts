@@ -6,18 +6,20 @@ plugins {
     `maven-publish`
 }
 
+val http4k_connect_version: String by project
+val nimbus_jose_jwt_version: String by project
 
-val http4kConnectVersion = "2.13.0.0"
-val nimbusJoseJwtVersion = "9.1.3"
 dependencies {
+    implementation(kotlin("stdlib-jdk8"))
+
     api("org.http4k:http4k-core")
     api("dev.forkhandles:result4k")
-    api("com.nimbusds:nimbus-jose-jwt:$nimbusJoseJwtVersion")
+    api("com.nimbusds:nimbus-jose-jwt:$nimbus_jose_jwt_version")
 
     api("org.http4k:http4k-connect-core")
-    kapt("org.http4k:http4k-connect-kapt-generator:$http4kConnectVersion")
+    kapt("org.http4k:http4k-connect-kapt-generator:$http4k_connect_version")
 
-    implementation(kotlin("stdlib-jdk8"))
+    testImplementation(project(":fake"))
 }
 
 publishing {
