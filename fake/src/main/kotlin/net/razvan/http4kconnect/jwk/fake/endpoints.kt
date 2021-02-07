@@ -14,6 +14,7 @@ import org.http4k.connect.storage.Storage
 import org.http4k.core.*
 import org.http4k.format.Moshi.auto
 import org.http4k.lens.Query
+import org.http4k.lens.string
 import org.http4k.routing.bind
 import java.util.*
 
@@ -34,14 +35,15 @@ fun renewJwkSet(storage: Storage<ECKey>) = "/renew" bind Method.GET to { req ->
 
 fun createJwt(storage: Storage<ECKey>) = "/jwt" bind Method.POST to { req ->
     val jwt = createJWT(bodyJwtRequestLens(req), storage.getOrDefault(KEY))
-    Response(Status.OK)
-        .header("Content-Type", ContentType.TEXT_PLAIN.value)
-        .body(jwt)
+    Response(Status.OK).with(
+        bodyJwtResponseLens of jwt
+    )
 }
 
 private val bodyJwksResponseLens by lazy { Body.auto<JWKResponse>().toLens() }
 private val queryKidLens by lazy { Query.defaulted("kid", UUID.randomUUID().toString()) }
 private val bodyJwtRequestLens by lazy { Body.auto<JWTRequest>().toLens() }
+private val bodyJwtResponseLens by lazy { Body.string(ContentType.TEXT_PLAIN).toLens() }
 
 private const val KEY = "key"
 
@@ -71,7 +73,7 @@ private fun createJWT(input: JWTRequest, key: ECKey): String {
 
 private fun Storage<ECKey>.getOrDefault(key: String, kid: String? = null): ECKey {
     return this[key] ?: run {
-        val k = kid?.let { getOrDefault(kid) } ?: generateKey()
+        val k = kid?.let { generateKey(kid) } ?: generateKey()
         this[key] = k
         k
     }
