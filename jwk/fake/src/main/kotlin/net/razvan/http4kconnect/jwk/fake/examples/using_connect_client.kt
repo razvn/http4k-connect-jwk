@@ -1,4 +1,4 @@
-package net.razvan.http4kconnect.jwk.fake.exemples
+package net.razvan.http4kconnect.jwk.fake.examples
 
 import com.nimbusds.jose.jwk.JWKSet
 import dev.forkhandles.result4k.Failure
